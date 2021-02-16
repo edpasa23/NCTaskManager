@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="mirrors.ibiblio.org" />
+      <option name="name" value="mirrors.ibiblio.org" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/ibiblio" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nc.thirdparty_sync" />
+      <option name="name" value="nc.thirdparty_sync" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/nc.thirdparty_sync" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="download.java.net" />
+      <option name="name" value="download.java.net" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/java.net-m2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nc.general_sync" />
+      <option name="name" value="nc.general_sync" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/nc.general_sync" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nc.thirdparty" />
+      <option name="name" value="nc.thirdparty" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/nc.thirdparty" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nc.general" />
+      <option name="name" value="nc.general" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/nc.general" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/central" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="nc.super.poms" />
+      <option name="name" value="nc.super.poms" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/nc.super.poms" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="repository.jboss.org" />
+      <option name="name" value="repository.jboss.org" />
+      <option name="url" value="https://nexussrv.netcracker.com/content/repositories/jboss-public" />
+    </remote-repository>
+  </component>
+</project>
