@@ -1,12 +1,15 @@
 package mx.edu.j2se.ParadaS.tasks;
 
-/*PRIMERA TAREA*/
+/**
+ * class Task
+ * @version 1.0 22 Feb 2021
+ * @author Eduardo Parada
+ */
 
-//Clase Task
+
 public class Task {
 
-    //*****Atributos*****
-
+    // Attributes
     String title;
     int time;
     int start;
@@ -15,108 +18,106 @@ public class Task {
     boolean active;
     boolean repeated;
 
-    //*****Constructores*****
+    // Constructor
 
-    //Contructor para tarea no repetitiva
+    // ...for non-repetitive task
     public Task (String title, int time){
-
+        this.title = title;
+        this.time = time;
+        repeated = false;
     }
 
-    //Contructor para tarea repetitiva
+    // ...for repetitive task
     public Task (String title, int start, int end, int interval){
-
+        this.title = title;
+        this.start = start;
+        this.end = end;
+        this.interval = interval;
+        repeated = true;
     }
 
-    //Metodos
+    // Methods
 
-    //Metodo de lectura para nombre
+    // Method for reading task name
     public String getTitle(){
         return title;
     }
 
-    //Metodo para modificar nombre
+    // Method for setting task name
     public void setTitle(String title){
         this.title = title;
     }
 
-    //Metodo para lectura de si sigue activa la tarea
+    // Method for reading the task status
     public boolean isActive(){
+        active = start < end;
         return active;
     }
 
-    //Metodo para modifcar el estado de la tarea
+    // Method for setting the task status
     public void setActive(boolean active){
         this.active = active;
     }
 
-    //Metodo de lectura de tiempo
+    // Method for reading execution time for a non-repetitive task
     public int getTime(){
-        if (isRepeated())
-            return start;
-        else
-            return time;
+        return (isRepeated() ? start : time);
     }
 
-    //Metodo para modificar tiempo
+    // Method for getting execution time for a non-repetitive task
     public void setTime(int time){
-        if(isRepeated())
+        if(isRepeated()) {
             repeated = false;
+        }
         this.time = time;
     }
 
-    //Metodo para lectura de inicio de ejecución de una tarea repetitiva
+    // Method for reading the start time of a repetitive task
     public int getStartTime(){
-        if (isRepeated())
-            return start;
-        else
-            return time;
+        return (isRepeated() ? start : time);
     }
 
-    //Metodo para lectura de finalizacion de ejecucion de una tarea repetitiva
+    // Method for reading the end time of a repetitive task
     public int getEndTime(){
-        if(isRepeated())
-            return end;
-        else
-            return time;
+        return (isRepeated() ? end : time);
     }
 
-    //Metodo de lectura para el intervalo de una tarea repetitiva
+    // Method for reading the interval time of a repetitive task
     public int getRepeatInterval(){
-        if(isRepeated())
-            return interval;
-        else
-            return 0;
+        return (isRepeated() ? interval : 0);
     }
 
-    //Metodo para modificar parametros de incio, final e intervalo
+    // Method for setting the start, the end and the interval of a repetitive task
     public void setTime(int start, int end, int interval){
-        if(!isRepeated())
+        if(!isRepeated()) {
             repeated = true;
-
+        }
         this.start = start;
         this.end = end;
         this.interval = interval;
     }
 
-    //Metodo para checar si es repetitivo
+    // Method to check the task for repeatability
     public boolean isRepeated(){
         repeated = interval > 0;
         return repeated;
     }
 
-    //Metodo para conocer la prócuma ejecicion (si es que la hay)
+    // Method to know the next execution time (if it exist)
     public int nextTimeAfter (int current){
         if(isActive()){
             if(isRepeated()){
-                start=start + interval;
+                if (current >= start) {
+                    start = start + interval;
+                }
                 return start;
             }
             else {
-                active = false;
-                return time-current;
+                return time;
             }
         }
-        else
+        else {
             return -1;
+        }
     }
 }
