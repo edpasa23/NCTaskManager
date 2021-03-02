@@ -2,7 +2,7 @@ package mx.edu.j2se.ParadaS.tasks;
 
 /**
  * class ArrayTaskList
- * @version 1.0 23 Feb 2021
+ * @version 1.1 02 Mar 2021
  * @author Eduardo Parada
  */
 
@@ -52,7 +52,7 @@ public class ArrayTaskList {
         ArrayTaskList searchArray = new ArrayTaskList();
 
         for(current = 0; current < last; current++){
-            if(taskList[current].active == true) {
+            if(taskList[current].active) {
                 if (taskList[current].start > from && taskList[current].end < to) {
                     searchArray.add(taskList[current]);
                 }
@@ -63,6 +63,5 @@ public class ArrayTaskList {
         }
         return searchArray;
     }
-
 }
 

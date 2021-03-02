@@ -2,7 +2,7 @@ package mx.edu.j2se.ParadaS.tasks;
 
 /**
  * class Task
- * @version 1.0 22 Feb 2021
+ * @version 1.1 02 Mar 2021
  * @author Eduardo Parada
  */
 
@@ -21,19 +21,30 @@ public class Task {
     // Constructor
 
     // ...for non-repetitive task
-    public Task (String title, int time){
-        this.title = title;
-        this.time = time;
-        repeated = false;
+    public Task (String title, int time)  throws IllegalArgumentException {
+
+        if(time <= 0 ){
+            throw new IllegalArgumentException("Parametro invalido para time");
+        }
+        else{
+            this.title = title;
+            this.time = time;
+            repeated = false;
+        }
     }
 
     // ...for repetitive task
-    public Task (String title, int start, int end, int interval){
-        this.title = title;
-        this.start = start;
-        this.end = end;
-        this.interval = interval;
-        repeated = true;
+    public Task (String title, int start, int end, int interval)  throws IllegalArgumentException {
+        if(start <= 0 || end <= start || interval < 0){
+            throw new IllegalArgumentException("Parametro(s) invalido(s)");
+        }
+        else {
+            this.title = title;
+            this.start = start;
+            this.end = end;
+            this.interval = interval;
+            repeated = true;
+        }
     }
 
     // Methods
