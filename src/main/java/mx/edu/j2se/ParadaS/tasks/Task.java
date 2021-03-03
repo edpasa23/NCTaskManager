@@ -76,11 +76,16 @@ public class Task {
     }
 
     // Method for getting execution time for a non-repetitive task
-    public void setTime(int time){
-        if(isRepeated()) {
-            repeated = false;
+    public void setTime (int time) throws IllegalArgumentException {
+        if(time <= 0 ){
+            throw new IllegalArgumentException("Parametro invalido para time");
         }
-        this.time = time;
+        else {
+            if (isRepeated()) {
+                repeated = false;
+            }
+            this.time = time;
+        }
     }
 
     // Method for reading the start time of a repetitive task
@@ -99,13 +104,18 @@ public class Task {
     }
 
     // Method for setting the start, the end and the interval of a repetitive task
-    public void setTime(int start, int end, int interval){
-        if(!isRepeated()) {
-            repeated = true;
+    public void setTime(int start, int end, int interval) throws IllegalArgumentException {
+        if(start <= 0 || end <= start || interval < 0){
+            throw new IllegalArgumentException("Parametro(s) invalido(s)");
         }
-        this.start = start;
-        this.end = end;
-        this.interval = interval;
+        else {
+            if (!isRepeated()) {
+                repeated = true;
+            }
+            this.start = start;
+            this.end = end;
+            this.interval = interval;
+        }
     }
 
     // Method to check the task for repeatability

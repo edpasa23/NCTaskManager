@@ -17,9 +17,14 @@ public class ArrayTaskList {
     // Methods
 
     // Method to add an specified task to the list
-    public void add (Task task){
-        taskList[last] = task;
-        last++;
+    public void add (Task task) throws IllegalArgumentException {
+        if(task == null ){
+            throw new IllegalArgumentException("Parametro invalido!");
+        }
+        else {
+            taskList[last] = task;
+            last++;
+        }
     }
 
     // Method to remove a task (if it exist)
@@ -43,7 +48,12 @@ public class ArrayTaskList {
 
     // Method that return an specified task in the list
     public Task getTask(int index) {
-        return taskList[index];
+        try {
+            return taskList[index];
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("No existe la tarea " + index);
+        }
+        return null;
     }
 
     // Method that shows tasks that are in a specific period of time
