@@ -1,50 +1,45 @@
 package mx.edu.j2se.ParadaS.tasks;
 
 /**
- * class Task
- * @version 1.1 02 Mar 2021
+ * Practice 1. Class Task
+ * @version 15 Mar 2021
  * @author Eduardo Parada
  */
 
 
-public class Task {
+class Task {
 
     // Attributes
-    String title;
+
+    private String title;
     int time;
     int start;
     int end;
     int interval;
     boolean active;
-    boolean repeated;
 
-    // Constructor
+    // Constructors
 
     // ...for non-repetitive task
-    public Task (String title, int time)  throws IllegalArgumentException {
-
-        if(time <= 0 ){
-            throw new IllegalArgumentException("Parametro invalido para time");
+    public Task (String title, int time) throws IllegalArgumentException{
+        if(time <= 0 ) {
+            throw new IllegalArgumentException("Time cant be negative");
         }
-        else{
-            this.title = title;
-            this.time = time;
-            repeated = false;
-        }
+        this.title = title;
+        this.time = time;
+        active = true; //PREGUNTAR
     }
 
     // ...for repetitive task
-    public Task (String title, int start, int end, int interval)  throws IllegalArgumentException {
-        if(start <= 0 || end <= start || interval < 0){
-            throw new IllegalArgumentException("Parametro(s) invalido(s)");
+    public Task (String title, int start, int end, int interval) throws IllegalArgumentException{
+        if(start < 0 || end <= start || interval < 0){
+            throw new IllegalArgumentException("Invalid Parameter(s)");
         }
-        else {
             this.title = title;
             this.start = start;
             this.end = end;
             this.interval = interval;
-            repeated = true;
-        }
+            active = true;
     }
 
     // Methods
@@ -61,7 +56,6 @@ public class Task {
 
     // Method for reading the task status
     public boolean isActive(){
-        active = start < end;
         return active;
     }
 
@@ -76,16 +70,16 @@ public class Task {
     }
 
     // Method for getting execution time for a non-repetitive task
-    public void setTime (int time) throws IllegalArgumentException {
-        if(time <= 0 ){
-            throw new IllegalArgumentException("Parametro invalido para time");
+    public void setTime (int time) throws IllegalArgumentException{
+        if(time <= 0 ) {
+            throw new IllegalArgumentException("time can´t be negative");
         }
-        else {
-            if (isRepeated()) {
-                repeated = false;
-            }
-            this.time = time;
+        if(isRepeated()){
+            start = 0;
+            end = 0;
+            interval = 0;
         }
+        this.time = time;
     }
 
     // Method for reading the start time of a repetitive task
@@ -104,37 +98,49 @@ public class Task {
     }
 
     // Method for setting the start, the end and the interval of a repetitive task
-    public void setTime(int start, int end, int interval) throws IllegalArgumentException {
+    public void setTime(int start, int end, int interval) throws IllegalArgumentException{
         if(start <= 0 || end <= start || interval < 0){
             throw new IllegalArgumentException("Parametro(s) invalido(s)");
         }
-        else {
-            if (!isRepeated()) {
-                repeated = true;
-            }
-            this.start = start;
-            this.end = end;
-            this.interval = interval;
+        if(!isRepeated()) {
+            time = 0;
         }
+        this.start = start;
+        this.end = end;
+        this.interval = interval;
     }
 
     // Method to check the task for repeatability
     public boolean isRepeated(){
-        repeated = interval > 0;
-        return repeated;
+        return interval>0;
     }
 
     // Method to know the next execution time (if it exist)
     public int nextTimeAfter (int current){
         if(isActive()){
             if(isRepeated()){
-                if (current >= start) {
-                    start = start + interval;
+                if(current <= start){
+                    return start;
                 }
-                return start;
+                else if(current >= start && current <= end ){
+                    int i=current;
+                    do{
+                        i=i+interval;
+                        if(i>end){
+                            return -1;
+                        }
+                    }while(i>=start && current <= end);
+                    return i;
+                }
+                else{
+                    return -1;
+                }
             }
-            else {
+            else if(current <= time){
                 return time;
+            }
+            else{
+                return -1;
             }
         }
         else {

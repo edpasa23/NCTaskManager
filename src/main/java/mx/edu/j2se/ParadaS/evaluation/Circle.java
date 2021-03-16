@@ -20,7 +20,7 @@ public class Circle {
         radius = 1;
     }
 
-    Circle(int radius) {
+    Circle(int radius) throws IllegalArgumentException{
         try {
             if(radius <= 0){
                 throw new IllegalArgumentException ("Ops, " + radius + " is invalid");
@@ -40,7 +40,7 @@ public class Circle {
     }
 
 
-    void setRadius (int radius){
+    void setRadius (int radius)throws IllegalArgumentException{
         try {
             if(radius <= 0){
                 throw new IllegalArgumentException ("This radius is invalid");
@@ -54,7 +54,7 @@ public class Circle {
     }
 
     double getArea(){
-        return Math.PI * Math.pow(getRadius(),2);
+        return Math.PI * radius * radius;
     }
 
 }
