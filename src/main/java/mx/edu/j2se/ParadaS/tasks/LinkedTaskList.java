@@ -1,16 +1,18 @@
 package mx.edu.j2se.ParadaS.tasks;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Objects;
 
-public class LinkedTaskList extends AbstractTaskList{
+public class LinkedTaskList extends AbstractTaskList {
 
 /**
- * Practice 3. class LinkedTasklist
- * @version 16 Mar 2021
+ * LinkedTasklist
+ * @version 06 Abril 2021
  * @author Eduardo Parada
  */
 
     // Atributtes
-    private LinkedList<Task> taskList = new LinkedList<Task>();
+     LinkedList<Task> taskList = new LinkedList<Task>();
 
     // Methods
 
@@ -28,11 +30,15 @@ public class LinkedTaskList extends AbstractTaskList{
             throw new IllegalArgumentException("Parametro invalido!");
         }
         boolean valueReturn = false;
-        for(int i=0; i< taskList.size() ; i++){
-            if(taskList.get(i).getTitle()==task.getTitle()){
-                taskList.remove(i);
+
+        // Get the iterator
+        Iterator<Task> iterador = taskList.iterator();
+
+        while(iterador.hasNext()){
+            Task actualTask = iterador.next();
+            if(actualTask.equals(task)){
                 valueReturn = true;
-               i--; //al remover un valor se recorre la lista, por ello hay que verificar el dato recorrido
+                iterador.remove();
             }
         }
         return valueReturn;
@@ -56,18 +62,53 @@ public class LinkedTaskList extends AbstractTaskList{
         if(to<from){
             throw new IllegalArgumentException("rango invalido");
         }
+
+        // Get the iterator
+        Iterator<Task> iterador = taskList.iterator();
+
         LinkedTaskList searchList = new LinkedTaskList();
 
-        for(int i = 0; i < size(); i++){
-            if(taskList.get(i).active) {
-                if (taskList.get(i).start > from && taskList.get(i).end < to) {
-                    searchList.add(taskList.get(i));
+        while(iterador.hasNext()){
+            Task actualTask = iterador.next();
+            if(actualTask.active){
+                if (actualTask.start > from && actualTask.end < to) {
+                    searchList.add(actualTask);
                 }
-                else if (taskList.get(i).time > from && taskList.get(i).time < to){
-                    searchList.add(taskList.get(i));
+                else if (actualTask.time > from && actualTask.time < to){
+                    searchList.add(actualTask);
                 }
             }
         }
         return searchList;
+
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null){
+            return false;
+        }
+        if (this == obj){
+            return true;
+        }
+        if(getClass() != obj.getClass()){
+            return false;
+        }
+        LinkedTaskList that = (LinkedTaskList) obj;
+        return taskList.equals(that.taskList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(taskList);
+    }
+
+    @Override
+    public String toString() {
+        return "LinkedTaskList{" + "taskList=" + taskList + '}';
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

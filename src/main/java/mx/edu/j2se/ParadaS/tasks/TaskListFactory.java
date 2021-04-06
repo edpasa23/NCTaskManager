@@ -1,17 +1,16 @@
 package mx.edu.j2se.ParadaS.tasks;
 
-public class TaskListFactory {
-
-    private static final LinkedTaskList list = new LinkedTaskList();
-    private static final ArrayTaskList array = new ArrayTaskList();
+class TaskListFactory {
 
     static AbstractTaskList createTaskList(ListTypes.types type){
 
         switch(type) {
             case ARRAY:
+                ArrayTaskList array = new ArrayTaskList();
                 return array;
 
             case LINKED:
+                LinkedTaskList list = new LinkedTaskList();
                 return list;
 
             default:

@@ -1,8 +1,10 @@
 package mx.edu.j2se.ParadaS.tasks;
 
+import java.util.Arrays;
+
 /**
- * Practice 2. class ArrayTaskList
- * @version 09 Mar 2021
+ * ArrayTaskList
+ * @version 06 Abril 2021
  * @author Eduardo Parada
  */
 
@@ -12,6 +14,7 @@ package mx.edu.j2se.ParadaS.tasks;
     private Task[] taskList = new Task[0];
 
     // Methods
+
 
     // Method to add an specified task to the list
     public void add (Task task) throws IllegalArgumentException{
@@ -83,5 +86,36 @@ package mx.edu.j2se.ParadaS.tasks;
         }
         return searchArray;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null){
+            return false;
+        }
+        if (this == obj){
+            return true;
+        }
+        if(getClass() != obj.getClass()){
+            return false;
+        }
+        ArrayTaskList that = (ArrayTaskList) obj;
+        return Arrays.equals(taskList, that.taskList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(taskList);
+    }
+
+    @Override
+    public String toString() {
+        return "ArrayTaskList{" + "taskList=" + Arrays.toString(taskList) + '}';
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
 }
+
 

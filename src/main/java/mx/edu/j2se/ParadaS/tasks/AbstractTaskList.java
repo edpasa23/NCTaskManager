@@ -9,6 +9,7 @@ abstract class AbstractTaskList {
      */
 
     abstract void add(Task task);
+
     abstract boolean remove (Task task);
     abstract int size();
     abstract Task getTask(int index);

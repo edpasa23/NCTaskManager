@@ -1,5 +1,7 @@
 package mx.edu.j2se.ParadaS.tasks;
 
+import java.util.Objects;
+
 /**
  * Practice 1. Class Task
  * @version 15 Mar 2021
@@ -11,7 +13,7 @@ class Task {
 
     // Attributes
 
-    private String title;
+    String title;
     int time;
     int start;
     int end;
@@ -27,7 +29,7 @@ class Task {
         }
         this.title = title;
         this.time = time;
-        active = true; //PREGUNTAR
+
     }
 
     // ...for repetitive task
@@ -39,7 +41,6 @@ class Task {
             this.start = start;
             this.end = end;
             this.interval = interval;
-            active = true;
     }
 
     // Methods
@@ -147,4 +148,41 @@ class Task {
             return -1;
         }
     }
+
+    //Equals
+    @Override
+    public boolean equals(Object obj) {
+
+        // null check
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Task other = (Task) obj;
+        return title == other.title && start == other.start && end == other.end &&
+                interval == other.interval && active == other.active;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, time, start, end, interval);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + ", time=" + time + ", start=" + start +
+                ", end=" + end + ", interval=" + interval + ", active=" + active + '}';
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
 }
