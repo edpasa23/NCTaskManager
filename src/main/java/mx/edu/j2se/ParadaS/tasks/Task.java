@@ -1,109 +1,139 @@
 package mx.edu.j2se.ParadaS.tasks;
 
-import java.util.Objects;
-
 /**
- * Practice 1. Class Task
- * @version 15 Mar 2021
- * @author Eduardo Parada
+ * This class is a template for repetitive and
+ * non-repetitive tasks
+ * @author Eduardo Parada S.
+ * @version -
+ *          Practice 1. Constructor, attributes and methods
+ *          Practice 3. Exceptions added
  */
 
+public class Task {
 
-class Task {
+    //Attributes
+    private String title;
+    private int time;
+    private int end;
+    private int start;
+    private int interval;
+    private boolean active;
 
-    // Attributes
+    //Constructors
 
-    String title;
-    int time;
-    int start;
-    int end;
-    int interval;
-    boolean active;
-
-    // Constructors
-
-    // ...for non-repetitive task
+    //Constructor for a non-repetitive task
     public Task (String title, int time) throws IllegalArgumentException{
-        if(time <= 0 ) {
-            throw new IllegalArgumentException("Time cant be negative");
+        if (title == null || time < 0){
+            throw new IllegalArgumentException(title==null?"Invalid title":"time can't be negative");
         }
         this.title = title;
         this.time = time;
-
     }
 
-    // ...for repetitive task
-    public Task (String title, int start, int end, int interval) throws IllegalArgumentException{
-        if(start < 0 || end <= start || interval < 0){
-            throw new IllegalArgumentException("Invalid Parameter(s)");
+    //Constructor for a repetitive task
+    public Task (String title, int start, int end, int interval) throws IllegalArgumentException {
+        if (title == null || start < 0 || end <= start || interval <= 0){
+            throw new IllegalArgumentException(title==null?"Invalid title":"invalid parameter(s) ");
         }
-            this.title = title;
-            this.start = start;
-            this.end = end;
-            this.interval = interval;
+        this.title = title;
+        this.start = start;
+        this.end = end;
+        this.interval = interval;
     }
 
-    // Methods
+    //getters and setters for title, active
 
-    // Method for reading task name
     public String getTitle(){
         return title;
     }
 
-    // Method for setting task name
-    public void setTitle(String title){
+    public void setTitle(String title) throws IllegalArgumentException{
+        if (title == null){
+            throw new IllegalArgumentException("Invalid title");
+        }
         this.title = title;
     }
 
-    // Method for reading the task status
     public boolean isActive(){
         return active;
     }
 
-    // Method for setting the task status
     public void setActive(boolean active){
         this.active = active;
     }
 
-    // Method for reading execution time for a non-repetitive task
+    /**
+     * This method return the time of a non-repetitive task, in case of a
+     * repetitive one, it returns the start time of the repetition
+     * @return the time of the task or the start time
+     * time of a repetitive task
+     */
+
     public int getTime(){
-        return (isRepeated() ? start : time);
+        return (!isRepeated() ? time : start);
     }
 
-    // Method for getting execution time for a non-repetitive task
-    public void setTime (int time) throws IllegalArgumentException{
-        if(time <= 0 ) {
-            throw new IllegalArgumentException("time can´t be negative");
+    /**
+     * This method set the time of a non-repetitive task, in case that
+     * the task is a repetitive one, it will become non-repetitive
+     * @param time the value of time in a non-repetitive task
+     */
+
+    public void setTime(int time) throws IllegalArgumentException{
+        if(time < 0){
+            throw new IllegalArgumentException("Time can't be negative");
         }
         if(isRepeated()){
-            start = 0;
-            end = 0;
             interval = 0;
+            end = 0;
+            start = 0;
         }
         this.time = time;
     }
 
-    // Method for reading the start time of a repetitive task
+    /**
+     * This method return the start time of a repetitive task, in case of a
+     * non-repetitive it returns "time"
+     * @return "start" in case of a repetitive task or "time" for a non-repetitive one
+     */
+
     public int getStartTime(){
         return (isRepeated() ? start : time);
     }
 
-    // Method for reading the end time of a repetitive task
+    /**
+     * This method return the end time of a repetitive task, in case of a
+     * non-repetitive it returns "time"
+     * @return "end" in case of a repetitive task or "time" for a non-repetitive one
+     */
+
     public int getEndTime(){
         return (isRepeated() ? end : time);
     }
 
-    // Method for reading the interval time of a repetitive task
+    /**
+     * This method return the interval of a repetitive task, in case of a
+     * non-repetitive it returns 0
+     * @return "interval" in case of a repetitive task or 0 for a non-repetitive one
+     */
+
     public int getRepeatInterval(){
         return (isRepeated() ? interval : 0);
     }
 
-    // Method for setting the start, the end and the interval of a repetitive task
+    /**
+     * This method set the time for a task, in case that
+     * the task is a non-repetitive one, it will become repetitive
+     * @param start start time
+     * @param end end time
+     * @param interval interval of a repetitive task
+     */
+
     public void setTime(int start, int end, int interval) throws IllegalArgumentException{
-        if(start <= 0 || end <= start || interval < 0){
-            throw new IllegalArgumentException("Parametro(s) invalido(s)");
+        if (start < 0 || end <= start || interval <= 0){
+            throw new IllegalArgumentException("invalid parameter(s)");
         }
-        if(!isRepeated()) {
+        if(!isRepeated()){
             time = 0;
         }
         this.start = start;
@@ -111,78 +141,50 @@ class Task {
         this.interval = interval;
     }
 
-    // Method to check the task for repeatability
+    /**
+     * This method review if the task is repetitive or not
+     * @return true for a repetitive task
+     */
+
     public boolean isRepeated(){
-        return interval>0;
+        return interval > 0;
     }
 
-    // Method to know the next execution time (if it exist)
-    public int nextTimeAfter (int current){
-        if(isActive()){
-            if(isRepeated()){
-                if(current <= start){
-                    return start;
-                }
-                else if(current >= start && current <= end ){
-                    int i=current;
-                    do{
-                        i=i+interval;
-                        if(i>end){
-                            return -1;
-                        }
-                    }while(i>=start && current <= end);
-                    return i;
-                }
-                else{
-                    return -1;
-                }
+    /**
+     * This method return the next execution time if it exist
+     * @param current The current time
+     * @return The time of the next execution or -1 if it not exist.
+     */
+
+    public int nextTimeAfter(int current) throws IllegalArgumentException{
+        if(current < 0){
+            throw new IllegalArgumentException("Current can't be negative");
+        }
+        //for repetitive task
+        if(isActive() && isRepeated()){
+            if(start>=current){
+                return start;
             }
-            else if(current <= time){
-                return time;
+            //This else if verify the next execution of a repetitive task
+            else if(start < current && end > current) {
+                int newStart = start;
+                do {
+                    newStart = newStart + interval;
+                }while(newStart < current);
+
+                return (newStart < end) ? newStart : -1;
             }
             else{
                 return -1;
             }
         }
-        else {
+        //for non repetitive task
+        else if(isActive() && !isRepeated()) {
+            return (time > current ? time : -1);
+        }
+        else{
             return -1;
         }
-    }
-
-    //Equals
-    @Override
-    public boolean equals(Object obj) {
-
-        // null check
-        if (obj == null) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        Task other = (Task) obj;
-        return title == other.title && start == other.start && end == other.end &&
-                interval == other.interval && active == other.active;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, time, start, end, interval);
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "title='" + title + ", time=" + time + ", start=" + start +
-                ", end=" + end + ", interval=" + interval + ", active=" + active + '}';
-    }
-
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 
 }

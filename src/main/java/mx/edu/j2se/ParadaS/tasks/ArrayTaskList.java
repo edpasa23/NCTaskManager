@@ -1,121 +1,106 @@
 package mx.edu.j2se.ParadaS.tasks;
 
-import java.util.Arrays;
-
 /**
- * ArrayTaskList
- * @version 06 Abril 2021
+ * This class create a list using arrays to stock tasks
  * @author Eduardo Parada
+ * @version -
+ *          Practice 2. List based on an array with methods to modify
+ *          the list
+ *          Practice 3. Exceptions added
  */
 
-    class ArrayTaskList extends AbstractTaskList{
+    public class ArrayTaskList extends AbstractTaskList{
 
-    // Atributtes
-    private Task[] taskList = new Task[0];
+    //Attributes
 
-    // Methods
+    //This is an array of Task-type
+    private Task arrayTask[] = new Task[0];
 
+    //Methods
 
-    // Method to add an specified task to the list
-    public void add (Task task) throws IllegalArgumentException{
-        if(task == null ){
-            throw new IllegalArgumentException("Parametro invalido!");
-        }
-        Task[] tempArray = new Task[size()+1];
-        tempArray[tempArray.length-1]=task;
-        System.arraycopy(taskList,0,tempArray,0,size());
-        taskList = tempArray;
+    /**
+     * This method adds a task to the list
+     * @param task it is the new task, it is added to the end of the list
+     */
+    public void add(Task task) throws NullPointerException {
+
+        Task[] auxArray = new Task[size() + 1];
+
+        //array copy to the new array
+        System.arraycopy(arrayTask, 0, auxArray, 0, size());
+
+        //add the new task
+        auxArray[size()] = task;
+
+        //save the updated list in arrayTask
+        arrayTask = auxArray;
     }
 
-    // Method to remove a task (if it exist)
-    public boolean remove (Task task) throws IllegalArgumentException{
-        if(task == null ){
-            throw new IllegalArgumentException("Parametro invalido!");
-        }
+    /**
+     * This method remove all tasks that are equals to the received task
+     * @param task is the task that will be compare
+     * @return true if it the task was in the list
+     */
+    public boolean remove(Task task) throws NullPointerException {
 
-        int counter=0;    //coincidencias
-        Task[] tempArray = new Task[size()];
+        Task[] auxArray = new Task[size()];
+        int counter = 0;
 
-        for(int i = 0 ; i < size(); i++ ) {
-            if (taskList[i].getTitle() != task.getTitle()) {
-                tempArray[counter] = taskList[i];
+        for (Task x : arrayTask) {
+            if (!x.getTitle().equals(task.getTitle())) {
+                auxArray[counter] = x;
                 counter++;
             }
         }
 
-        if(counter==size()) {
+        if (counter == size()) {
             return false;
-        }
-        else{
-            Task[] tempArray2 = new Task[counter];
-            System.arraycopy(tempArray,0,tempArray2,0,counter);
-            taskList = tempArray2;
+        } else {
+            Task[] auxArray2 = new Task[counter];
+            System.arraycopy(auxArray, 0, auxArray2, 0, counter);
+            arrayTask = auxArray2;
             return true;
         }
+
     }
 
-    // Method that returns the number of tasks
-    public int size(){
-        return taskList.length;
-    }
-
-    // Method that return an specified task in the list
+    /**
+     * This method return a task (if it exist) in the specified index
+     *
+     * @param index
+     * @return task in the specified index - 1
+     */
     public Task getTask(int index) throws IndexOutOfBoundsException{
-        if (index-1 < 0 && index > size()){
-            throw new IndexOutOfBoundsException("No existe la tarea " + index);
-        }
-            return taskList[index-1];
+        return arrayTask[index];
     }
 
-    // Method that shows tasks that are in a specific period of time
+    public int size() {
+        return arrayTask.length;
+    }
+
+    /**
+     * This method return all tasks that are scheduled in a certain interval
+     * @param from
+     * @param to
+     * @return Tasks schedulen in a certain interval or null if there is not task
+     */
     public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException{
-        if(to<from){
-            throw new IllegalArgumentException("rango invalido");
+
+        if(from < 0 || to < from){
+            throw new IllegalArgumentException("Invalid range");
         }
+
         ArrayTaskList searchArray = new ArrayTaskList();
 
-        for(int i = 0; i < size(); i++){
-            if(taskList[i].active) {
-                if (taskList[i].start > from && taskList[i].end < to) {
-                    searchArray.add(taskList[i]);
-                }
-                else if (taskList[i].time > from && taskList[i].time < to){
-                    searchArray.add(taskList[i]);
+        for (Task x : arrayTask) {
+            if (x.isActive()) {
+                if (x.getStartTime() >= from && x.getEndTime() <= to) {
+                    searchArray.add(x);
+                } else if (x.getTime() > from && x.getTime() < to) {
+                    searchArray.add(x);
                 }
             }
         }
         return searchArray;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null){
-            return false;
-        }
-        if (this == obj){
-            return true;
-        }
-        if(getClass() != obj.getClass()){
-            return false;
-        }
-        ArrayTaskList that = (ArrayTaskList) obj;
-        return Arrays.equals(taskList, that.taskList);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(taskList);
-    }
-
-    @Override
-    public String toString() {
-        return "ArrayTaskList{" + "taskList=" + Arrays.toString(taskList) + '}';
-    }
-
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
 }
-
-

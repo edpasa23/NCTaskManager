@@ -1,6 +1,12 @@
 package mx.edu.j2se.ParadaS.tasks;
 
-class TaskListFactory {
+/**
+ * @author Eduardo Parada S.
+ * @version -
+ *          Practice 4. TaskListFactory
+ */
+
+public class TaskListFactory {
 
     static AbstractTaskList createTaskList(ListTypes.types type){
 
