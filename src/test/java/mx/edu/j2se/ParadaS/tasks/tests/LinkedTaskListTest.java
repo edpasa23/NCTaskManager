@@ -5,6 +5,8 @@ import mx.edu.j2se.ParadaS.tasks.Task;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 public class LinkedTaskListTest {
 
     @Test
@@ -18,30 +20,63 @@ public class LinkedTaskListTest {
         Task task5 = new Task("Task5",10);
 
         //Array
-        LinkedTaskList arrayT = new LinkedTaskList();
+        LinkedTaskList listT = new LinkedTaskList();
 
-        arrayT.add(task1);
-        arrayT.add(task2);
-        arrayT.add(task3);
-        arrayT.add(task4);
+        listT.add(task1);
+        listT.add(task2);
+        listT.add(task3);
+        listT.add(task4);
 
         task1.setActive(true);
         task2.setActive(true);
         task3.setActive(true);
         task4.setActive(true);
 
-        Assert.assertEquals(4,arrayT.size());
+        Assert.assertEquals(4,listT.size());
 
-        Assert.assertEquals(false,arrayT.remove(task5));
+        Assert.assertEquals(false,listT.remove(task5));
 
-        Assert.assertEquals(true,arrayT.remove(task2));
+        Assert.assertEquals(true,listT.remove(task2));
 
 
-        Assert.assertEquals("Task3",arrayT.getTask(1).getTitle());
+        Assert.assertEquals("Task3",listT.getTask(1).getTitle());
 
-        LinkedTaskList prueba = arrayT.incoming(0,15);
+        LinkedTaskList prueba = listT.incoming(0,15);
 
         Assert.assertEquals(3,prueba.size());
+
+        for(Task x: listT){
+            System.out.println("Tarea:"+x.getTitle());
+        }
+
+        Iterator<Task> iteratorArrayTask = listT.iterator();
+        while (iteratorArrayTask.hasNext()){
+
+            Task tmp = iteratorArrayTask.next();
+
+            System.out.println("Tarea:"+tmp.getTitle());
+
+        }
+
+        System.out.println(listT.toString());
+
+        System.out.println(listT.hashCode());
+
+        LinkedTaskList clon = (LinkedTaskList) listT.clone();
+
+        System.out.println(clon.toString());
+
+        System.out.println(clon.hashCode());
+
+        clon.remove(task3);
+
+        System.out.println(listT.toString());
+
+        System.out.println(clon.toString());
+
+
+
+
 
     }
 

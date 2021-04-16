@@ -1,10 +1,17 @@
 package mx.edu.j2se.ParadaS.tasks;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 /**
  * This class create a list using a linked list to stock tasks
  * @author Eduardo Parada S.
  * @version -
  *          Practice 3. Linked List and exceptions
+ *          Practice 5. Iterators added
+ *                      equals and hasCode added
+ *                      toString added
+ *                      clone option added
  */
 
 public class LinkedTaskList extends AbstractTaskList{
@@ -20,6 +27,7 @@ public class LinkedTaskList extends AbstractTaskList{
      *
      * @param task it is the new task, it is added to the end of the list
      */
+    @Override
     public void add(Task task) throws NullPointerException {
         if (task == null) {
             throw new NullPointerException("This method not support null objects");
@@ -45,6 +53,7 @@ public class LinkedTaskList extends AbstractTaskList{
      * @param task is the task that will be compare
      * @return true if it the task was in the list
      */
+    @Override
     public boolean remove(Task task) throws NullPointerException {
         if (task == null) {
             throw new NullPointerException("This method not support null objects");
@@ -58,7 +67,7 @@ public class LinkedTaskList extends AbstractTaskList{
             busqueda:
             { //recorrido por los Nodos
                 do {
-                    if (head.task.getTitle().equals(task.getTitle())) {
+                    if (head.task.equals(task)) {
 
                         out = true;
 
@@ -72,13 +81,13 @@ public class LinkedTaskList extends AbstractTaskList{
                             head = head.next;
                             n = head;
                         }
-                    } else if (n.next.task.getTitle().equals(task.getTitle())) {
+                    } else if (n.next.task.equals(task)) {
 
                         out = true;
 
                         Node n2 = n;
 
-                        while (n2.next.task.getTitle().equals(task.getTitle())) {
+                        while (n2.next.task.equals(task)) {
 
                             n2 = n2.next;
 
@@ -99,6 +108,7 @@ public class LinkedTaskList extends AbstractTaskList{
         return out;
     }
 
+    @Override
     public int size() {
         int count = 0;
         Node n = head;
@@ -159,9 +169,102 @@ public class LinkedTaskList extends AbstractTaskList{
         } while (n != null);
         return searchLinkedList;
     }
+
+    @Override
+    public Iterator<Task> iterator() {
+        return new LinkedTaskIterator();
+    }
+
+    private class LinkedTaskIterator implements Iterator<Task>{
+        private int index = 0;
+
+        public boolean hasNext(){
+            return (index < size() );
+        }
+
+        public Task next(){
+            index++;
+            return getTask(index-1);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        /* Check if o is an instance of LinkedTaskList or not.
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof LinkedTaskList)) {
+            return false;
+        }
+
+        // typecast to LinkedTaskList so that we can compare data members
+        LinkedTaskList l = (LinkedTaskList) o;
+
+        // Compare the data members and return accordingly
+
+        if (l.size() == size()) {
+
+            Iterator<Task> lIterator = l.iterator();
+            Iterator<Task> oIterator = ((LinkedTaskList) o).iterator();
+
+            while (lIterator.hasNext() && oIterator.hasNext()) {
+
+                Task tmp1 = lIterator.next();
+                Task tmp2 = oIterator.next();
+
+                if(!tmp1.equals(tmp2)) {
+                    return false;
+                }
+            }
+            return true;
+        } else
+            return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return head.hashCode()*size();
+    }
+
+    @Override
+    public String toString() {
+
+        String texto = "Task List:\n";
+
+        if(size()==0){
+        texto = "Empty List";
+        }
+        else{
+            Node n = head;
+
+            do{
+                texto =  texto +  n.task.toString();
+                n = n.next;
+            }while(n!=null);
+        }
+
+        return texto;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+
+        LinkedTaskList clon = (LinkedTaskList) super.clone();
+
+        clon.head = (Node) head.clone();
+
+        return clon;
+
+    }
+
 }
 
-class Node{
+class Node implements Cloneable{
 
     //Attributes
 
@@ -182,5 +285,16 @@ class Node{
     public boolean hasNext(){
         return next != null;
     }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public int hashCode() {
+        return task.hashCode()*7;
+    }
+
 }
 

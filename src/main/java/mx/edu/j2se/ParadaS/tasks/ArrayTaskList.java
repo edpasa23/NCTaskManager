@@ -1,4 +1,6 @@
 package mx.edu.j2se.ParadaS.tasks;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * This class create a list using arrays to stock tasks
@@ -7,9 +9,13 @@ package mx.edu.j2se.ParadaS.tasks;
  *          Practice 2. List based on an array with methods to modify
  *          the list
  *          Practice 3. Exceptions added
+ *          Practice 5. Iterators added
+ *                      equals and hasCode added
+ *                      toString added
+ *                      clone option added
  */
 
-    public class ArrayTaskList extends AbstractTaskList{
+    public class ArrayTaskList extends AbstractTaskList {
 
     //Attributes
 
@@ -20,9 +26,14 @@ package mx.edu.j2se.ParadaS.tasks;
 
     /**
      * This method adds a task to the list
+     *
      * @param task it is the new task, it is added to the end of the list
      */
+    @Override
     public void add(Task task) throws NullPointerException {
+        if (task == null) {
+            throw new NullPointerException("This method not support null objects");
+        }
 
         Task[] auxArray = new Task[size() + 1];
 
@@ -38,16 +49,21 @@ package mx.edu.j2se.ParadaS.tasks;
 
     /**
      * This method remove all tasks that are equals to the received task
+     *
      * @param task is the task that will be compare
      * @return true if it the task was in the list
      */
+    @Override
     public boolean remove(Task task) throws NullPointerException {
+        if (task == null) {
+            throw new NullPointerException("This method not support null objects");
+        }
 
         Task[] auxArray = new Task[size()];
         int counter = 0;
 
         for (Task x : arrayTask) {
-            if (!x.getTitle().equals(task.getTitle())) {
+            if (!x.equals(task)) {
                 auxArray[counter] = x;
                 counter++;
             }
@@ -70,10 +86,20 @@ package mx.edu.j2se.ParadaS.tasks;
      * @param index
      * @return task in the specified index - 1
      */
-    public Task getTask(int index) throws IndexOutOfBoundsException{
+    @Override
+    public Task getTask(int index) throws IndexOutOfBoundsException {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("This method not support negative index");
+        } else if (size() == 0) {
+            throw new IndexOutOfBoundsException("The list is empty");
+        } else if (index > size()) {
+            throw new IndexOutOfBoundsException("This index doesnt exist");
+        }
+
         return arrayTask[index];
     }
 
+    @Override
     public int size() {
         return arrayTask.length;
     }
@@ -84,9 +110,9 @@ package mx.edu.j2se.ParadaS.tasks;
      * @param to
      * @return Tasks schedulen in a certain interval or null if there is not task
      */
-    public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException{
+    public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException {
 
-        if(from < 0 || to < from){
+        if (from < 0 || to < from) {
             throw new IllegalArgumentException("Invalid range");
         }
 
@@ -103,4 +129,81 @@ package mx.edu.j2se.ParadaS.tasks;
         }
         return searchArray;
     }
+
+    @Override
+    public Iterator<Task> iterator() {
+        return new ArrayTaskIterator();
+    }
+
+    protected class ArrayTaskIterator implements Iterator<Task>{
+        private int index = 0;
+
+        public boolean hasNext(){
+            return (index < size() );
+        }
+
+        public Task next(){
+            index++;
+            return getTask(index-1);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        /* Check if o is an instance of ArrayTaskList or not.
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof ArrayTaskList)) {
+            return false;
+        }
+
+        // typecast to ArrayTaskList so that we can compare data members
+        ArrayTaskList a = (ArrayTaskList) o;
+
+        // Compare the data members and return accordingly
+
+        if (a.size() == size()) {
+
+            Iterator<Task> aIterator = a.iterator();
+            Iterator<Task> oIterator = ((ArrayTaskList) o).iterator();
+
+            while (aIterator.hasNext() && oIterator.hasNext()) {
+
+                Task tmp1 = aIterator.next();
+                Task tmp2 = oIterator.next();
+
+                if(!tmp1.equals(tmp2)) {
+                    return false;
+                }
+            }
+            return true;
+        } else
+            return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return arrayTask.hashCode()*size();
+    }
+
+    @Override
+    public String toString() {
+        return "Task List:\n" +
+                Arrays.toString(arrayTask);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+
+       // Task[] copy = (ArrayTaskList.arrayTask)super.clone();
+        return (ArrayTaskList)super.clone();
+    }
+
 }
+
+

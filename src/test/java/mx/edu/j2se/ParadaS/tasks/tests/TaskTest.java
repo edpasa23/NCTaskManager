@@ -31,14 +31,17 @@ public class TaskTest {
 
     @Test
     public void testRepetitiveToNonRepetitive() throws Exception{
-        //Repetitive Task changed to non Repetitive
+        //Repetitive Task that will ve changed to non Repetitive
         Task taskRep = new Task("Task",10,30,5);
 
-        taskRep.setTitle("Task ahora repetitiva");
+        String prueba = taskRep.toString();
+
+        taskRep.setTitle("Task nuevo nombre");
         taskRep.setTime(12);
-        Assert.assertEquals("Task ahora repetitiva",taskRep.getTitle());
+        Assert.assertEquals("Task nuevo nombre",taskRep.getTitle());
         Assert.assertEquals(false,taskRep.isRepeated());
         Assert.assertEquals(12,taskRep.getTime());
+
 
         taskRep.setActive(true);
 
@@ -46,5 +49,29 @@ public class TaskTest {
         Assert.assertEquals(-1,taskRep.nextTimeAfter(13));
         Assert.assertEquals(12,taskRep.nextTimeAfter(8));
 
+        String prueba2 = taskRep.toString();
+        System.out.println(prueba);
+        System.out.println(prueba2);
+
+    }
+
+    @Test
+    public void cloneTest() throws Exception{
+        Task taskOriginal = new Task("Original",10,30,5);
+
+
+        Task taskClone = (Task) taskOriginal.clone();
+        System.out.println(taskOriginal.hashCode());
+        System.out.println(taskClone.hashCode());
+
+        taskClone.setTitle("nuevoTitle");
+
+        String prueba = taskOriginal.toString();
+        String prueba2 = taskClone.toString();
+
+        System.out.println(prueba);
+        System.out.println(prueba2);
+        System.out.println(taskOriginal.hashCode());
+        System.out.println(taskClone.hashCode());
     }
 }

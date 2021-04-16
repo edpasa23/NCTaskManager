@@ -4,6 +4,7 @@ package mx.edu.j2se.ParadaS.tasks;
  * @author Eduardo Parada S.
  * @version -
  *          Practice 4. TaskListFactory
+ *          Practice 5. Iterators added
  */
 
 public class TaskListFactory {

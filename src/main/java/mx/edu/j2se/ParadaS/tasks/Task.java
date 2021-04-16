@@ -7,9 +7,12 @@ package mx.edu.j2se.ParadaS.tasks;
  * @version -
  *          Practice 1. Constructor, attributes and methods
  *          Practice 3. Exceptions added
+ *          Practice 5. equals and hasCode added
+ *                      toString added
+ *                      clone option added
  */
 
-public class Task {
+public class Task implements Cloneable{
 
     //Attributes
     private String title;
@@ -187,4 +190,56 @@ public class Task {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        /* Check if o is an instance of Task or not
+          "null instanceof [type]" also returns false */
+        if (!(o instanceof Task)) {
+            return false;
+        }
+
+            // typecast to Task so that we can compare data members
+        Task t = (Task) o;
+
+        // Compare the data members and return accordingly
+
+        return t.getTitle().equals(getTitle()) &&
+                t.getTime() == getTime() &&
+                t.getStartTime() == getStartTime() &&
+                t.getEndTime() == getEndTime() &&
+                t.isActive() == isActive();
+    }
+
+    @Override
+    public int hashCode() {
+        if (isRepeated()) {
+            return title.hashCode() * start * end * interval;
+        } else {
+            return title.hashCode() * time;
+        }
+    }
+
+    @Override
+    public String toString() {
+        if(isRepeated()){
+            return "Task: \"" + title + "\" starts at " +
+                    start + " and ends at " +
+                    end + " in intervals of " +interval +"\n";
+        }
+        else{
+            return "Task: \"" + title + "\" starts at " +
+                    time+"\n";
+        }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return (Task)super.clone();
+    }
 }
