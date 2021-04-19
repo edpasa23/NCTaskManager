@@ -1,6 +1,7 @@
 package mx.edu.j2se.ParadaS.tasks;
 
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * This is an abstract class for LinkedTaskList and ArrayTaskList
@@ -20,6 +21,8 @@ abstract class AbstractTaskList implements Iterable<Task>,Cloneable{
     abstract int size();
 
     abstract Task getTask(int index);
+
+    abstract Stream<Task> getStream();
 
     abstract AbstractTaskList incoming(int from, int to);
 

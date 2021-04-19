@@ -2,6 +2,7 @@ package mx.edu.j2se.ParadaS.tasks;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * This class create a list using a linked list to stock tasks
@@ -12,6 +13,7 @@ import java.util.Iterator;
  *                      equals and hasCode added
  *                      toString added
  *                      clone option added
+ *          Practice 6. Stream added
  */
 
 public class LinkedTaskList extends AbstractTaskList{
@@ -260,6 +262,25 @@ public class LinkedTaskList extends AbstractTaskList{
 
         return clon;
 
+    }
+
+    @Override
+    public Stream<Task> getStream() throws IllegalStateException{
+
+        if(size()==0){
+            throw new IllegalArgumentException("The List is empty");
+        }
+
+        Stream.Builder<Task> builder = Stream.builder();
+
+        Node aux = head;
+
+        while(aux != null){
+            builder.add(aux.task);
+            aux = aux.next;
+        }
+
+        return builder.build();
     }
 
 }
