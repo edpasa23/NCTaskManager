@@ -1,5 +1,4 @@
 package mx.edu.j2se.ParadaS.tasks;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -15,6 +14,7 @@ import java.util.stream.Stream;
  *                      toString added
  *                      clone option added
  *          Practice 6. Stream added
+ *                      (toString modified because used arrays library
  */
 
     public class ArrayTaskList extends AbstractTaskList {
@@ -108,11 +108,11 @@ import java.util.stream.Stream;
 
     /**
      * This method return all tasks that are scheduled in a certain interval
-     * @param from
-     * @param to
-     * @return Tasks schedulen in a certain interval or null if there is not task
+     * @param
+     * @param
+     * @return Tasks scheduled in a certain interval or null if there is not task
      */
-    public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException {
+/*    public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException {
 
         if (from < 0 || to < from) {
             throw new IllegalArgumentException("Invalid range");
@@ -130,7 +130,7 @@ import java.util.stream.Stream;
             }
         }
         return searchArray;
-    }
+    }*/
 
     @Override
     public Iterator<Task> iterator() {
@@ -194,9 +194,21 @@ import java.util.stream.Stream;
     }
 
     @Override
-    public String toString() {
-        return "Task List:\n" +
-                Arrays.toString(arrayTask);
+    public String toString() throws IllegalStateException{ //Revisar
+
+        if(size()==0){
+            throw new IllegalArgumentException("The List is empty");
+        }
+
+        String text = arrayTask[0].toString() + "\n";
+
+        for(int i = 1 ; i < size() ; i++){
+
+            text = text + arrayTask[i].toString() +  "\n";
+
+        }
+
+        return "Task List:\n" + text;
     }
 
     @Override

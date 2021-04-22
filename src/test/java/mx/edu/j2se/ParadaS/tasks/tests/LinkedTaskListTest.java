@@ -11,6 +11,7 @@ public class LinkedTaskListTest {
 
     @Test
     public void testLinkedList() throws Exception{
+/*
 
         //Tasks
         Task task1 = new Task("Task1",1,10,1);
@@ -73,6 +74,7 @@ public class LinkedTaskListTest {
         System.out.println(listT.toString());
 
         System.out.println(clon.toString());
+*/
 
 
 

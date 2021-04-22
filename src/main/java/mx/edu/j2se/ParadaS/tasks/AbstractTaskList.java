@@ -24,6 +24,4 @@ abstract class AbstractTaskList implements Iterable<Task>,Cloneable{
 
     abstract Stream<Task> getStream();
 
-    abstract AbstractTaskList incoming(int from, int to);
-
 }

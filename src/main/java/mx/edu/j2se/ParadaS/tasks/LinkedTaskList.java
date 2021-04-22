@@ -1,6 +1,6 @@
 package mx.edu.j2se.ParadaS.tasks;
 
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -145,11 +145,11 @@ public class LinkedTaskList extends AbstractTaskList{
     /**
      * This method return all tasks that are scheduled in a certain interval
      *
-     * @param from
-     * @param to
+     * @param
+     * @param
      * @return return tasks scheduled in a certain interval or return null if there is not task
      */
-    public LinkedTaskList incoming(int from, int to) throws IllegalArgumentException {
+ /*   public LinkedTaskList incoming(int from, int to) throws IllegalArgumentException {
 
         if (from < 0 || to < from) {
             throw new IllegalArgumentException("Invalid range");
@@ -161,7 +161,7 @@ public class LinkedTaskList extends AbstractTaskList{
 
         do {
             if (n.task.isActive()) {
-                if (n.task.getStartTime() >= from && n.task.getEndTime() <= to) {
+                if (n.task.getStartTime().isAfter(from) && n.task.getEndTime() <= to) {
                     searchLinkedList.add(n.task);
                 } else if (n.task.getTime() >= from && n.task.getTime() <= to) {
                     searchLinkedList.add(n.task);
@@ -170,7 +170,7 @@ public class LinkedTaskList extends AbstractTaskList{
             }
         } while (n != null);
         return searchLinkedList;
-    }
+    }*/
 
     @Override
     public Iterator<Task> iterator() {

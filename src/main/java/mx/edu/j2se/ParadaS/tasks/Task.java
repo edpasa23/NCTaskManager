@@ -1,5 +1,8 @@
 package mx.edu.j2se.ParadaS.tasks;
 
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAmount;
+
 /**
  * This class is a template for repetitive and
  * non-repetitive tasks
@@ -10,34 +13,36 @@ package mx.edu.j2se.ParadaS.tasks;
  *          Practice 5. equals and hasCode added
  *                      toString added
  *                      clone option added
+ *          Practice 7. LocalDateTime added
  */
 
 public class Task implements Cloneable{
 
     //Attributes
     private String title;
-    private int time;
-    private int end;
-    private int start;
-    private int interval;
+    private LocalDateTime time;
+    private LocalDateTime end;
+    private LocalDateTime start;
+    private  LocalDateTime interval;
     private boolean active;
 
     //Constructors
 
     //Constructor for a non-repetitive task
-    public Task (String title, int time) throws IllegalArgumentException{
-        if (title == null || time < 0){
-            throw new IllegalArgumentException(title==null?"Invalid title":"time can't be negative");
+    public Task (String title, LocalDateTime time) throws IllegalArgumentException{
+        if(time.equals(null)){
+            throw new IllegalArgumentException("time no valid");
         }
         this.title = title;
         this.time = time;
     }
 
     //Constructor for a repetitive task
-    public Task (String title, int start, int end, int interval) throws IllegalArgumentException {
-        if (title == null || start < 0 || end <= start || interval <= 0){
-            throw new IllegalArgumentException(title==null?"Invalid title":"invalid parameter(s) ");
+    public Task (String title, LocalDateTime start, LocalDateTime end, LocalDateTime interval) throws IllegalArgumentException{
+        if(start.equals(null) || end.equals(null) || interval.equals(null)){
+            throw new IllegalArgumentException();
         }
+
         this.title = title;
         this.start = start;
         this.end = end;
@@ -72,7 +77,7 @@ public class Task implements Cloneable{
      * time of a repetitive task
      */
 
-    public int getTime(){
+    public LocalDateTime getTime(){
         return (!isRepeated() ? time : start);
     }
 
@@ -82,14 +87,14 @@ public class Task implements Cloneable{
      * @param time the value of time in a non-repetitive task
      */
 
-    public void setTime(int time) throws IllegalArgumentException{
-        if(time < 0){
-            throw new IllegalArgumentException("Time can't be negative");
+    public void setTime(LocalDateTime time) throws IllegalArgumentException{
+        if(time.equals(null)){
+            throw new IllegalArgumentException();
         }
         if(isRepeated()){
-            interval = 0;
-            end = 0;
-            start = 0;
+            interval = null;
+            end = null;
+            start = null;
         }
         this.time = time;
     }
@@ -100,7 +105,7 @@ public class Task implements Cloneable{
      * @return "start" in case of a repetitive task or "time" for a non-repetitive one
      */
 
-    public int getStartTime(){
+    public LocalDateTime getStartTime(){
         return (isRepeated() ? start : time);
     }
 
@@ -110,7 +115,7 @@ public class Task implements Cloneable{
      * @return "end" in case of a repetitive task or "time" for a non-repetitive one
      */
 
-    public int getEndTime(){
+    public LocalDateTime getEndTime(){
         return (isRepeated() ? end : time);
     }
 
@@ -120,8 +125,8 @@ public class Task implements Cloneable{
      * @return "interval" in case of a repetitive task or 0 for a non-repetitive one
      */
 
-    public int getRepeatInterval(){
-        return (isRepeated() ? interval : 0);
+    public LocalDateTime getRepeatInterval(){
+        return (isRepeated() ? interval : null);
     }
 
     /**
@@ -132,12 +137,12 @@ public class Task implements Cloneable{
      * @param interval interval of a repetitive task
      */
 
-    public void setTime(int start, int end, int interval) throws IllegalArgumentException{
-        if (start < 0 || end <= start || interval <= 0){
+    public void setTime(LocalDateTime start, LocalDateTime end, LocalDateTime interval) throws IllegalArgumentException{
+        if ( start.equals(null) || end.isBefore(start) || interval.equals(null)) {
             throw new IllegalArgumentException("invalid parameter(s)");
         }
         if(!isRepeated()){
-            time = 0;
+            time = null;
         }
         this.start = start;
         this.end = end;
@@ -150,7 +155,7 @@ public class Task implements Cloneable{
      */
 
     public boolean isRepeated(){
-        return interval > 0;
+        return interval != null;
     }
 
     /**
@@ -159,34 +164,40 @@ public class Task implements Cloneable{
      * @return The time of the next execution or -1 if it not exist.
      */
 
-    public int nextTimeAfter(int current) throws IllegalArgumentException{
-        if(current < 0){
-            throw new IllegalArgumentException("Current can't be negative");
-        }
+    public LocalDateTime nextTimeAfter(LocalDateTime current){
+
         //for repetitive task
         if(isActive() && isRepeated()){
-            if(start>=current){
+            if(start.isAfter(current) || start.isEqual(current)){
                 return start;
             }
-            //This else if verify the next execution of a repetitive task
-            else if(start < current && end > current) {
-                int newStart = start;
-                do {
-                    newStart = newStart + interval;
-                }while(newStart < current);
+            else if(end.isEqual(current)){
+                return end;
+            }
+            //This "else if" verify the next execution of a repetitive task
+            else if((start.isBefore(current) || start.isEqual(current))   && (end.isAfter(current))) {
+                LocalDateTime newStart = start;
 
-                return (newStart < end) ? newStart : -1;
+
+                do {
+                    newStart =  newStart.
+                                plusHours(interval.getHour()).
+                                plusMinutes(interval.getMinute()).
+                                plusSeconds(interval.getSecond());
+                }while(newStart.isBefore(current));
+
+                return ((newStart.isEqual(getEndTime()) || newStart.isBefore(getEndTime())) ? newStart : null);
             }
             else{
-                return -1;
+                return null;
             }
         }
         //for non repetitive task
         else if(isActive() && !isRepeated()) {
-            return (time > current ? time : -1);
+            return ((time.isAfter(current) || time.isEqual(current) ) ? time : null);
         }
         else{
-            return -1;
+            return null;
         }
     }
 
@@ -210,18 +221,18 @@ public class Task implements Cloneable{
         // Compare the data members and return accordingly
 
         return t.getTitle().equals(getTitle()) &&
-                t.getTime() == getTime() &&
-                t.getStartTime() == getStartTime() &&
-                t.getEndTime() == getEndTime() &&
+                t.getTime().equals(getTime()) &&
+                t.getStartTime().equals(getStartTime()) &&
+                t.getEndTime().equals(getEndTime()) &&
                 t.isActive() == isActive();
     }
 
     @Override
     public int hashCode() {
         if (isRepeated()) {
-            return title.hashCode() * start * end * interval;
+            return title.hashCode() * start.hashCode() * end.hashCode() * interval.hashCode();
         } else {
-            return title.hashCode() * time;
+            return title.hashCode() * time.hashCode();
         }
     }
 
@@ -229,12 +240,12 @@ public class Task implements Cloneable{
     public String toString() {
         if(isRepeated()){
             return "Task: \"" + title + "\" starts at " +
-                    start + " and ends at " +
-                    end + " in intervals of " +interval +"\n";
+                    start.toString() + " and ends at " +
+                    end.toString() + " in intervals of " +interval.toString() +"\n";
         }
         else{
             return "Task: \"" + title + "\" starts at " +
-                    time+"\n";
+                    time.toString()+"\n";
         }
     }
 

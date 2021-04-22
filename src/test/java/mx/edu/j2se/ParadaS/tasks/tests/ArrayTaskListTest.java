@@ -11,6 +11,7 @@ public class ArrayTaskListTest {
 
     @Test
     public void ArrayTaskListTest() throws Exception {
+/*
         //Tasks
         Task task1 = new Task("Task1", 1, 10, 1);
         Task task2 = new Task("Task2", 2, 12, 2);
@@ -72,6 +73,8 @@ public class ArrayTaskListTest {
         System.out.println(cloneTaskList.hashCode());
 
 
+    }
+*/
     }
 
 }
