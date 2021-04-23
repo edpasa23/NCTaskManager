@@ -1,7 +1,7 @@
 package mx.edu.j2se.ParadaS.tasks;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAmount;
 
 /**
  * This class is a template for repetitive and
@@ -16,7 +16,7 @@ import java.time.temporal.TemporalAmount;
  *          Practice 7. LocalDateTime added
  */
 
-public class Task implements Cloneable{
+public class Task implements Cloneable, Serializable {
 
     //Attributes
     private String title;
@@ -30,7 +30,7 @@ public class Task implements Cloneable{
 
     //Constructor for a non-repetitive task
     public Task (String title, LocalDateTime time) throws IllegalArgumentException{
-        if(time.equals(null)){
+        if(time == null){
             throw new IllegalArgumentException("time no valid");
         }
         this.title = title;
@@ -39,7 +39,7 @@ public class Task implements Cloneable{
 
     //Constructor for a repetitive task
     public Task (String title, LocalDateTime start, LocalDateTime end, LocalDateTime interval) throws IllegalArgumentException{
-        if(start.equals(null) || end.equals(null) || interval.equals(null)){
+        if(start == null || end == null || interval == null){
             throw new IllegalArgumentException();
         }
 
@@ -88,7 +88,7 @@ public class Task implements Cloneable{
      */
 
     public void setTime(LocalDateTime time) throws IllegalArgumentException{
-        if(time.equals(null)){
+        if(time == null){
             throw new IllegalArgumentException();
         }
         if(isRepeated()){
@@ -138,7 +138,7 @@ public class Task implements Cloneable{
      */
 
     public void setTime(LocalDateTime start, LocalDateTime end, LocalDateTime interval) throws IllegalArgumentException{
-        if ( start.equals(null) || end.isBefore(start) || interval.equals(null)) {
+        if ( start==null || end.isBefore(start) || interval==null) {
             throw new IllegalArgumentException("invalid parameter(s)");
         }
         if(!isRepeated()){
@@ -182,8 +182,8 @@ public class Task implements Cloneable{
                 do {
                     newStart =  newStart.
                                 plusHours(interval.getHour()).
-                                plusMinutes(interval.getMinute()).
-                                plusSeconds(interval.getSecond());
+                                plusMinutes(interval.getMinute());
+                                //plusSeconds(interval.getSecond());
                 }while(newStart.isBefore(current));
 
                 return ((newStart.isEqual(getEndTime()) || newStart.isBefore(getEndTime())) ? newStart : null);

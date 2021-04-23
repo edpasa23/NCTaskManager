@@ -82,7 +82,7 @@ public class TaskTest {
     @Test
     public void testLocalDate() throws Exception{
 
-        LocalDateTime prueba = LocalDateTime.of(2021,Month.APRIL, 29, 10, 10, 00);
+        LocalDateTime prueba = LocalDateTime.of(2021,Month.APRIL, 29, 10, 10);
         Task taskNoRep = new Task("Task",prueba);
         System.out.println("Titulo: "+taskNoRep.getTitle());
         System.out.println("Time: "+taskNoRep.getTime());
@@ -98,9 +98,9 @@ public class TaskTest {
 
         System.out.println("equals clone y original: "+taskNoRep.equals(taskClone));
 
-        LocalDateTime inicio = LocalDateTime.of(2021,Month.APRIL, 1, 1, 0, 0);
-        LocalDateTime fin = LocalDateTime.of(2021,Month.APRIL, 30, 1, 0, 0);
-        LocalDateTime intervalo = LocalDateTime.of(1,1, 1, 1, 0, 0);
+        LocalDateTime inicio = LocalDateTime.of(2021,Month.APRIL, 1, 1, 0);
+        LocalDateTime fin = LocalDateTime.of(2021,Month.APRIL, 30, 1, 0);
+        LocalDateTime intervalo = LocalDateTime.of(1,1, 1, 1, 0);
         System.out.println("Repetitiva "+taskClone.isRepeated());
 
         taskClone.setTime(inicio,fin,intervalo);
@@ -116,9 +116,9 @@ public class TaskTest {
         System.out.println("equals clone y original: "+taskNoRep.equals(taskClone));
         taskClone.setActive(true);
 
-        System.out.println("next time 1: "+taskClone.nextTimeAfter(LocalDateTime.of(2021,Month.APRIL, 1, 3, 0, 0)));
-        System.out.println("next time 2: "+taskClone.nextTimeAfter(LocalDateTime.of(2021,Month.APRIL, 29, 23, 45, 1)));
-        System.out.println("next time 3: "+taskClone.nextTimeAfter(LocalDateTime.of(2021,Month.APRIL, 30, 1, 0, 0)));
+        System.out.println("next time 1: "+taskClone.nextTimeAfter(LocalDateTime.of(2021,Month.APRIL, 1, 3, 0)));
+        System.out.println("next time 2: "+taskClone.nextTimeAfter(LocalDateTime.of(2021,Month.APRIL, 29, 23, 45)));
+        System.out.println("next time 3: "+taskClone.nextTimeAfter(LocalDateTime.of(2021,Month.APRIL, 30, 1, 0)));
     }
 
 }
