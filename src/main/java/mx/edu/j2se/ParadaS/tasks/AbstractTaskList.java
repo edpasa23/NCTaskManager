@@ -15,12 +15,29 @@ abstract class AbstractTaskList implements Iterable<Task>,Cloneable, Serializabl
 
     public abstract Iterator iterator();
 
+    /**
+     * This method adds a task to the list
+     * @param task this task is added to the end of the list
+     */
     abstract void add(Task task);
 
+    /**
+     * This method remove all tasks that are equals to the received task
+     * @param task this task will be compare in the list
+     * @return true if the task was in the list (and removed)
+     */
     abstract boolean remove(Task task);
 
+    /** Return the size of the list
+     * @return Return an integer that represent the size of the list
+     */
     abstract int size();
 
+    /**
+     * This method return a task (if it exist) in the specified index
+     * @param index It is the index to search the list
+     * @return task in the specified index
+     */
     abstract Task getTask(int index);
 
     abstract Stream<Task> getStream();

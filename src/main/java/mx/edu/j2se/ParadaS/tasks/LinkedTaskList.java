@@ -1,6 +1,5 @@
 package mx.edu.j2se.ParadaS.tasks;
 
-import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -24,11 +23,6 @@ public class LinkedTaskList extends AbstractTaskList{
 
     //Methods
 
-    /**
-     * This method adds a task to the list
-     *
-     * @param task it is the new task, it is added to the end of the list
-     */
     @Override
     public void add(Task task) throws NullPointerException {
         if (task == null) {
@@ -49,12 +43,6 @@ public class LinkedTaskList extends AbstractTaskList{
         }
     }
 
-    /**
-     * This method remove all tasks that are equals to the received task
-     *
-     * @param task is the task that will be compare
-     * @return true if it the task was in the list
-     */
     @Override
     public boolean remove(Task task) throws NullPointerException {
         if (task == null) {
@@ -66,21 +54,25 @@ public class LinkedTaskList extends AbstractTaskList{
 
             Node n = head;
 
-            busqueda:
-            { //recorrido por los Nodos
+
+
                 do {
+                    System.out.println(n.task.getTitle());
                     if (head.task.equals(task)) {
+
 
                         out = true;
 
                         //if there is only one element in the linked list
                         // the program have to initialize again head
 
-                        if (head.next == null) {
+                        Node aux = head.next;
+
+                        if (aux == null) {
                             head = null;
-                            return true;
+                            n = null;
                         } else {
-                            head = head.next;
+                            head = aux;
                             n = head;
                         }
                     } else if (n.next.task.equals(task)) {
@@ -93,19 +85,24 @@ public class LinkedTaskList extends AbstractTaskList{
 
                             n2 = n2.next;
 
-                            if (n2 == null) {
-                                n.next = null;
-                                break busqueda;
+                            if(n2.next == null){
+                                break;
                             }
                         }
 
-                        n.next = n2.next;
-                        n = n2.next;
+                        if (n2.next == null) {
+                            n.next = null;
+                            n=null;
+                        }
+                        else {
+                            n.next = n2.next;
+                            n = n2.next;
+                        }
                     } else {
                         n = n.next;
                     }
-                } while (n.hasNext());
-            }
+                } while (n != null);
+
         }
         return out;
     }
@@ -141,36 +138,6 @@ public class LinkedTaskList extends AbstractTaskList{
         }
         return n.task;
     }
-
-    /**
-     * This method return all tasks that are scheduled in a certain interval
-     *
-     * @param
-     * @param
-     * @return return tasks scheduled in a certain interval or return null if there is not task
-     */
- /*   public LinkedTaskList incoming(int from, int to) throws IllegalArgumentException {
-
-        if (from < 0 || to < from) {
-            throw new IllegalArgumentException("Invalid range");
-        }
-
-        LinkedTaskList searchLinkedList = new LinkedTaskList();
-
-        Node n = head;
-
-        do {
-            if (n.task.isActive()) {
-                if (n.task.getStartTime().isAfter(from) && n.task.getEndTime() <= to) {
-                    searchLinkedList.add(n.task);
-                } else if (n.task.getTime() >= from && n.task.getTime() <= to) {
-                    searchLinkedList.add(n.task);
-                }
-                n = n.next;
-            }
-        } while (n != null);
-        return searchLinkedList;
-    }*/
 
     @Override
     public Iterator<Task> iterator() {

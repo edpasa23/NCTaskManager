@@ -7,8 +7,20 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This class allow saving tasks and task list on the disc
+ * @author Eduardo Parada S.
+ * @version -
+ *          Practice 8
+ */
+
 public class TaskIO {
 
+    /**
+     *Write the tasks from the list in a stream
+     * @param tasks list of tasks
+     * @param out where the tasks are written
+     */
     public static void write(AbstractTaskList tasks, OutputStream out) throws IOException {
 
     DataOutputStream stream = new DataOutputStream(out);
@@ -64,6 +76,11 @@ public class TaskIO {
 
     }
 
+    /**
+     * Read tasks from the stream to the current task list
+     * @param tasks task list
+     * @param in where tasks are read
+     */
     public static void read(AbstractTaskList tasks, InputStream in) throws IOException, ClassNotFoundException {
 
         DataInputStream stream = new DataInputStream(in);
@@ -91,13 +108,13 @@ public class TaskIO {
             if(isRepeated){
                 year = stream.readInt();month = stream.readInt();day = stream.readInt();
                 hour = stream.readInt();minute = stream.readInt();
-                LocalDateTime interval = LocalDateTime.of(year,month,day,hour,minute);
-                year = stream.readInt();month = stream.readInt();day = stream.readInt();
-                hour = stream.readInt();minute = stream.readInt();
                 LocalDateTime start = LocalDateTime.of(year,month,day,hour,minute);
                 year = stream.readInt();month = stream.readInt();day = stream.readInt();
                 hour = stream.readInt();minute = stream.readInt();
                 LocalDateTime end = LocalDateTime.of(year,month,day,hour,minute);
+                year = stream.readInt();month = stream.readInt();day = stream.readInt();
+                hour = stream.readInt();minute = stream.readInt();
+                LocalDateTime interval = LocalDateTime.of(year,month,day,hour,minute);
                 taskAux = new Task(title,start,end,interval);
             }
             else{
@@ -114,6 +131,11 @@ public class TaskIO {
         stream.close();
     }
 
+    /**
+     * Writes tasks from the list to the file
+     * @param tasks task to be written
+     * @param file -
+     */
     public static void writeBinary(AbstractTaskList tasks, File file) throws IOException {
 
         FileOutputStream fileOut = new FileOutputStream(file);
@@ -123,6 +145,11 @@ public class TaskIO {
         fileOut.close();
     }
 
+    /**
+     * Reads tasks from the file to the task list
+     * @param tasks list where the the tasks will be saved
+     * @param file -
+     */
     public static void readBinary(AbstractTaskList tasks, File file) throws IOException, ClassNotFoundException {
 
         FileInputStream fileIn = new FileInputStream(file);
@@ -132,6 +159,11 @@ public class TaskIO {
         fileIn.close();
     }
 
+    /**
+     * Writes tasks from the list to the stream in JSON format
+     * @param tasks list of tasks
+     * @param out where the tasks are written
+     */
     public static void write(AbstractTaskList tasks, Writer out) throws IOException{
 
         JsonWriter writer = new JsonWriter(out);
@@ -165,6 +197,11 @@ public class TaskIO {
         writer.flush();
     }
 
+    /**
+     * Reads tasks from the stream in JSON format
+     * @param tasks task list
+     * @param in where tasks are read
+     */
     public static void read(AbstractTaskList tasks, Reader in) throws IOException {
 
         JsonReader reader = new JsonReader(in);
@@ -238,6 +275,11 @@ public class TaskIO {
         }
     }
 
+    /**
+     * Writes tasks to a file in JSON format
+     * @param tasks task to be written
+     * @param file -
+     */
     public static void writeText(AbstractTaskList tasks, File file) throws IOException{
 
         FileWriter writer = new FileWriter(file);
@@ -245,6 +287,11 @@ public class TaskIO {
 
     }
 
+    /**
+     * Reads tasks from the file (JSON format)
+     * @param tasks list where the the tasks will be saved
+     * @param file -
+     */
     public static void readText(AbstractTaskList tasks, File file) throws  IOException{
         FileReader reader = new FileReader(file);
         read(tasks,reader);

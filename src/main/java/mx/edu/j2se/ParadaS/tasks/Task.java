@@ -19,28 +19,44 @@ import java.time.LocalDateTime;
 public class Task implements Cloneable, Serializable {
 
     //Attributes
+
     private String title;
     private LocalDateTime time;
     private LocalDateTime end;
     private LocalDateTime start;
+    //"interval" is initilizated like LocalDateTime but
+    //the program dont consider year and month
     private  LocalDateTime interval;
     private boolean active;
 
     //Constructors
 
-    //Constructor for a non-repetitive task
+    /**
+     * Constructor for a non-repetitive task. It is initialized like not active
+     * @param title The title of the task (String)
+     * @param time Time to do the activity
+     */
     public Task (String title, LocalDateTime time) throws IllegalArgumentException{
-        if(time == null){
-            throw new IllegalArgumentException("time no valid");
+        if(time == null || title == null){
+            throw new IllegalArgumentException("null argument(s)");
         }
         this.title = title;
         this.time = time;
     }
 
-    //Constructor for a repetitive task
+    /**
+     * Constructor for a repetitive task. It is initialized like not active
+     * @param title The title of the task (String)
+     * @param start Period start date
+     * @param end Period end date
+     * @param interval Interval of repetition
+     */
     public Task (String title, LocalDateTime start, LocalDateTime end, LocalDateTime interval) throws IllegalArgumentException{
-        if(start == null || end == null || interval == null){
-            throw new IllegalArgumentException();
+        if(start == null || end == null || interval == null || title == null){
+            throw new IllegalArgumentException("null argument(s)");
+        }
+        else if(end.isBefore(start)){
+            throw new IllegalArgumentException("parameter end cant be before parameter start");
         }
 
         this.title = title;
@@ -73,10 +89,8 @@ public class Task implements Cloneable, Serializable {
     /**
      * This method return the time of a non-repetitive task, in case of a
      * repetitive one, it returns the start time of the repetition
-     * @return the time of the task or the start time
-     * time of a repetitive task
+     * @return the time of the task or the start time of a repetitive task
      */
-
     public LocalDateTime getTime(){
         return (!isRepeated() ? time : start);
     }
@@ -86,7 +100,6 @@ public class Task implements Cloneable, Serializable {
      * the task is a repetitive one, it will become non-repetitive
      * @param time the value of time in a non-repetitive task
      */
-
     public void setTime(LocalDateTime time) throws IllegalArgumentException{
         if(time == null){
             throw new IllegalArgumentException();
@@ -104,7 +117,6 @@ public class Task implements Cloneable, Serializable {
      * non-repetitive it returns "time"
      * @return "start" in case of a repetitive task or "time" for a non-repetitive one
      */
-
     public LocalDateTime getStartTime(){
         return (isRepeated() ? start : time);
     }
@@ -114,17 +126,15 @@ public class Task implements Cloneable, Serializable {
      * non-repetitive it returns "time"
      * @return "end" in case of a repetitive task or "time" for a non-repetitive one
      */
-
     public LocalDateTime getEndTime(){
         return (isRepeated() ? end : time);
     }
 
     /**
      * This method return the interval of a repetitive task, in case of a
-     * non-repetitive it returns 0
-     * @return "interval" in case of a repetitive task or 0 for a non-repetitive one
+     * non-repetitive it returns null
+     * @return interval In case of a repetitive task return interval or 0 for a non-repetitive one
      */
-
     public LocalDateTime getRepeatInterval(){
         return (isRepeated() ? interval : null);
     }
@@ -132,14 +142,16 @@ public class Task implements Cloneable, Serializable {
     /**
      * This method set the time for a task, in case that
      * the task is a non-repetitive one, it will become repetitive
-     * @param start start time
-     * @param end end time
-     * @param interval interval of a repetitive task
+     * @param start Period start date
+     * @param end Period end date
+     * @param interval Interval of repetition
      */
-
     public void setTime(LocalDateTime start, LocalDateTime end, LocalDateTime interval) throws IllegalArgumentException{
-        if ( start==null || end.isBefore(start) || interval==null) {
-            throw new IllegalArgumentException("invalid parameter(s)");
+        if(start == null || end == null || interval == null){
+            throw new IllegalArgumentException("null argument(s)");
+        }
+        else if(end.isBefore(start)){
+            throw new IllegalArgumentException("parameter end cant be before parameter start");
         }
         if(!isRepeated()){
             time = null;
@@ -153,37 +165,34 @@ public class Task implements Cloneable, Serializable {
      * This method review if the task is repetitive or not
      * @return true for a repetitive task
      */
-
     public boolean isRepeated(){
         return interval != null;
     }
 
     /**
-     * This method return the next execution time if it exist
-     * @param current The current time
+     * This method return the next execution time if it exist, if not it returns a null value
+     * @param current LocalDateTime that works like a reference for the next execution
      * @return The time of the next execution or -1 if it not exist.
      */
+    public LocalDateTime nextTimeAfter(LocalDateTime current) throws IllegalArgumentException{
+        if(current == null){
+            throw new IllegalArgumentException("null current parameter");
+        }
 
-    public LocalDateTime nextTimeAfter(LocalDateTime current){
-
-        //for repetitive task
+        //Check if the task is active and a repetitive task
         if(isActive() && isRepeated()){
+            //If current is after start and before start it return start
             if(start.isAfter(current) || start.isEqual(current)){
                 return start;
-            }
-            else if(end.isEqual(current)){
-                return end;
             }
             //This "else if" verify the next execution of a repetitive task
             else if((start.isBefore(current) || start.isEqual(current))   && (end.isAfter(current))) {
                 LocalDateTime newStart = start;
-
-
+                //this cycle search the next execution adding the interval
                 do {
                     newStart =  newStart.
                                 plusHours(interval.getHour()).
                                 plusMinutes(interval.getMinute());
-                                //plusSeconds(interval.getSecond());
                 }while(newStart.isBefore(current));
 
                 return ((newStart.isEqual(getEndTime()) || newStart.isBefore(getEndTime())) ? newStart : null);
@@ -192,7 +201,7 @@ public class Task implements Cloneable, Serializable {
                 return null;
             }
         }
-        //for non repetitive task
+        //Check if the task is active and a non-repetitive task
         else if(isActive() && !isRepeated()) {
             return ((time.isAfter(current) || time.isEqual(current) ) ? time : null);
         }
@@ -215,12 +224,12 @@ public class Task implements Cloneable, Serializable {
             return false;
         }
 
-            // typecast to Task so that we can compare data members
+        // typecast to Task so that we can compare data members
         Task t = (Task) o;
 
         // Compare the data members and return accordingly
 
-        return t.getTitle().equals(getTitle()) &&
+        return  t.getTitle().equals(getTitle()) &&
                 t.getTime().equals(getTime()) &&
                 t.getStartTime().equals(getStartTime()) &&
                 t.getEndTime().equals(getEndTime()) &&
@@ -239,13 +248,13 @@ public class Task implements Cloneable, Serializable {
     @Override
     public String toString() {
         if(isRepeated()){
-            return "Task: \"" + title + "\" starts at " +
-                    start.toString() + " and ends at " +
-                    end.toString() + " in intervals of " +interval.toString() +"\n";
+            return "Task: " + title + " from " +
+                    start.toString() + " to " +
+                    end.toString() + " every " +interval.toString();
         }
         else{
-            return "Task: \"" + title + "\" starts at " +
-                    time.toString()+"\n";
+            return "Task: " + title + " on " +
+                    time.toString();
         }
     }
 
@@ -253,4 +262,5 @@ public class Task implements Cloneable, Serializable {
     public Object clone() throws CloneNotSupportedException {
         return (Task)super.clone();
     }
+
 }

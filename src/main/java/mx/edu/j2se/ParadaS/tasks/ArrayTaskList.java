@@ -14,27 +14,18 @@ import java.util.stream.Stream;
  *                      toString added
  *                      clone option added
  *          Practice 6. Stream added
- *                      (toString modified because used arrays library
+ *                      (toString modified because used arrays library)
  */
 
     public class ArrayTaskList extends AbstractTaskList {
 
-    //Attributes
-
-    //This is an array of Task-type
+    //Array of Task-type
     private Task arrayTask[] = new Task[0];
 
-    //Methods
-
-    /**
-     * This method adds a task to the list
-     *
-     * @param task it is the new task, it is added to the end of the list
-     */
     @Override
-    public void add(Task task) throws NullPointerException {
+    public void add(Task task) throws IllegalArgumentException {
         if (task == null) {
-            throw new NullPointerException("This method not support null objects");
+            throw new IllegalArgumentException("This method not support null objects");
         }
 
         Task[] auxArray = new Task[size() + 1];
@@ -51,14 +42,13 @@ import java.util.stream.Stream;
 
     /**
      * This method remove all tasks that are equals to the received task
-     *
-     * @param task is the task that will be compare
-     * @return true if it the task was in the list
+     * @param task this task will be compare in the list
+     * @return true if the task was in the list (and removed)
      */
     @Override
-    public boolean remove(Task task) throws NullPointerException {
+    public boolean remove(Task task) throws IllegalArgumentException {
         if (task == null) {
-            throw new NullPointerException("This method not support null objects");
+            throw new IllegalArgumentException("This method not support null objects");
         }
 
         Task[] auxArray = new Task[size()];
@@ -82,12 +72,6 @@ import java.util.stream.Stream;
 
     }
 
-    /**
-     * This method return a task (if it exist) in the specified index
-     *
-     * @param index
-     * @return task in the specified index - 1
-     */
     @Override
     public Task getTask(int index) throws IndexOutOfBoundsException {
         if (index < 0) {
@@ -105,32 +89,6 @@ import java.util.stream.Stream;
     public int size() {
         return arrayTask.length;
     }
-
-    /**
-     * This method return all tasks that are scheduled in a certain interval
-     * @param
-     * @param
-     * @return Tasks scheduled in a certain interval or null if there is not task
-     */
-/*    public ArrayTaskList incoming(int from, int to) throws IllegalArgumentException {
-
-        if (from < 0 || to < from) {
-            throw new IllegalArgumentException("Invalid range");
-        }
-
-        ArrayTaskList searchArray = new ArrayTaskList();
-
-        for (Task x : arrayTask) {
-            if (x.isActive()) {
-                if (x.getStartTime() >= from && x.getEndTime() <= to) {
-                    searchArray.add(x);
-                } else if (x.getTime() > from && x.getTime() < to) {
-                    searchArray.add(x);
-                }
-            }
-        }
-        return searchArray;
-    }*/
 
     @Override
     public Iterator<Task> iterator() {

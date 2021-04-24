@@ -3,13 +3,19 @@ package mx.edu.j2se.ParadaS.tasks;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * @author Eduardo Parada S.
+ * @version -
+ *          Practice 7. incoming and calendar methods added
+ */
+
 public class Tasks {
 
     /**
      * This method return all tasks that are scheduled in a certain interval
-     * @param tasks
-     * @param start
-     * @param end
+     * @param tasks Iterable of type Task
+     * @param start Period start date
+     * @param end Period end date
      * @return a iterable with Tasks scheduled in a certain interval or null if there is not task
      */
     public static Iterable<Task> incoming(Iterable<Task> tasks, LocalDateTime start, LocalDateTime end) throws IllegalArgumentException {
@@ -36,10 +42,10 @@ public class Tasks {
 
     /**
      * This method return a calendar of tasks for a specified period
-     * @param tasks -
-     * @param start -
-     * @param end -
-     * @return
+     * @param tasks Iterable of type Task
+     * @param start Period start date
+     * @param end Period end date
+     * @return a SortedMap with Tasks scheduled in a certain interval
      */
     public static SortedMap<LocalDateTime, Set<Task>> calendar (Iterable<Task> tasks, LocalDateTime start, LocalDateTime end){
 
